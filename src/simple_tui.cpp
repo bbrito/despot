@@ -345,8 +345,7 @@ int SimpleTUI::run(int argc, char *argv[]) {
    * =========================*/
   DSPOMDP *model = InitializeModel(options);
 
-  /* =========================
-   * initialize solver
+   /* initialize solver
    * =========================*/
   Solver *solver = InitializeSolver(model, solver_type, options);
   assert(solver != NULL);

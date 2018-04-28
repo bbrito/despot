@@ -61,6 +61,7 @@ protected:
 	Solver* solver_;
 	clock_t start_clockt_;
 	State* state_;
+	Belief* belief_;
 	int step_;
 	double target_finish_time_;
 	std::ostream* out_;

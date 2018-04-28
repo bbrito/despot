@@ -81,9 +81,10 @@ public:
 	double value() const;
 
 	void PrintTree(int depth = -1, std::ostream& os = std::cout);
-	void PrintPolicyTree(int depth = -1, std::ostream& os = std::cout);
+	void PrintPolicyTree(int depth,  std::vector<int>& policyStar, std::vector<int>& depthOrder);
 
 	void Free(const DSPOMDP& model);
+
 };
 
 /* =============================================================================
@@ -100,6 +101,7 @@ protected:
 	std::map<OBS_TYPE, VNode*> children_;
 	double lower_bound_;
 	double upper_bound_;
+
 
 	// For POMCP
 	int count_; // Number of visits on the node

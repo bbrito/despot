@@ -2,7 +2,6 @@
 #define BELIEF_H
 
 #include <vector>
-
 #include <despot/util/random.h>
 #include <despot/util/logging.h>
 #include <despot/core/history.h>

@@ -6,7 +6,7 @@ set(LIBRARY_INSTALL_PATH "lib" CACHE PATH "Library install path")
 set(INCLUDE_INSTALL_PATH "include" CACHE PATH "Include install path")
 set(CONFIG_INSTALL_PATH "${LIBRARY_INSTALL_PATH}/${PROJECT_NAME}/cmake")
 
-set(DESPOT_BUILD_EXAMPLES ON CACHE BOOL "Build C++ model examples")
+set(DESPOT_BUILD_EXAMPLES false CACHE BOOL "Build C++ model examples")
 set(DESPOT_BUILD_POMDPX ON CACHE BOOL "Build POMDPX example")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2 -mfpmath=sse")

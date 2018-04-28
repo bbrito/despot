@@ -40,11 +40,14 @@ struct SearchStatistics {
 
 class Solver {
 protected:
-	const DSPOMDP* model_;
+
 	Belief* belief_;
 	History history_;
 
 public:
+    const DSPOMDP* model_;
+    std::vector<double> goal_probs;
+    std::vector<int> policyStar, depthOrder;
 	Solver(const DSPOMDP* model, Belief* belief);
 	virtual ~Solver();
 

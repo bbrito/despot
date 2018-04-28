@@ -158,6 +158,10 @@ bool Evaluator::RunStep(int step, int round) {
 	logi << "[RunStep] Time spent in " << typeid(*solver_).name()
 		<< "::Search(): " << (end_t - start_t) << endl;
 
+    cout << solver_->policyStar.size() << endl;
+    cout << solver_->depthOrder.size() << endl;
+    cout << solver_->goal_probs.size() << endl;
+
 	double reward;
 	OBS_TYPE obs;
 	start_t = get_time_second();
@@ -192,6 +196,7 @@ bool Evaluator::RunStep(int step, int round) {
 			*out_ << "- ObsProb = " << model_->ObsProb(obs, *state_, action)
 				<< endl;
 	}
+
 
 	ReportStepReward();
 	end_t = get_time_second();

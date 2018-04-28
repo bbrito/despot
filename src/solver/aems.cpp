@@ -24,7 +24,7 @@ ValuedAction AEMS::Search() {
 	statistics_ = SearchStatistics();
 	statistics_.num_particles_before_search = model_->NumActiveParticles();
 
-	model_->PrintBelief(*belief_); //TODO: check and remove
+	//model_->PrintBelief(*belief_); //TODO: check and remove
 	// cout << *belief_ << endl;
 	clock_t begin = clock();
 	statistics_.initial_lb = root_->lower_bound();

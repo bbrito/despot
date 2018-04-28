@@ -11,6 +11,8 @@
 #include <despot/util/memorypool.h>
 #include <despot/util/seeds.h>
 #include <despot/util/util.h>
+#include "/home/bingyu/ProMotionPlan/DrivingSimulator/devel/include/Simulation/waypoint.h"
+
 
 namespace despot {
 
@@ -91,11 +93,17 @@ class POMCPPrior;
 /**
  * Interface for a deterministic simulative model for POMDP.
  */
+ 
+
 class DSPOMDP {
 public:
 	DSPOMDP();
 
 	virtual ~DSPOMDP();
+	
+	std::vector<Simulation::waypoint> traj_R;
+	
+	std::vector<double> goal_prob_;
 
 	/* ========================================================================
 	 * Deterministic simulative model and related functions
@@ -191,8 +199,7 @@ public:
 	/**
 	 * Prints a belief.
 	 */
-	virtual void PrintBelief(const Belief& belief,
-		std::ostream& out = std::cout) const = 0;
+	virtual void PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out = std::cout)const = 0;
 
 	/* ========================================================================
 	 * Memory management.

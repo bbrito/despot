@@ -93,7 +93,7 @@ void Bridge::PrintState(const State& state, ostream& out) const {
 	out << state.text() << endl;
 }
 
-void Bridge::PrintBelief(const Belief& belief, ostream& out) const {
+void Bridge::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, ostream& out) const {
 }
 
 void Bridge::PrintObs(const State& state, OBS_TYPE obs, ostream& out) const {

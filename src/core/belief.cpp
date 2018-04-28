@@ -334,12 +334,19 @@ void ParticleBelief::Update(int action, OBS_TYPE obs) {
 	double total_weight = 0;
 	double reward;
 	OBS_TYPE o;
+
+
 	// Update particles
 	for (int i = 0; i <particles_.size(); i++) {
 		State* particle = particles_[i];
 		bool terminal = model_->Step(*particle, Random::RANDOM.NextDouble(),
 			action, reward, o);
-		double prob = model_->ObsProb(obs, *particle, action);
+        double prob;
+
+//        if (particle->weight <= 0.00001)
+//            prob = 1.0;
+//        else
+            prob = model_->ObsProb(obs, *particle, action);
 
 		if (!terminal && prob) { // Terminal state is not required to be explicitly represented and may not have any observation
 			particle->weight *= prob;
@@ -383,8 +390,8 @@ void ParticleBelief::Update(int action, OBS_TYPE obs) {
 			for (int i = 0; i < initial_particles_.size(); i ++)
 				particles_.push_back(model_->Copy(initial_particles_[i]));
 		}
-		
-		//Update total weight so that effective number of particles are computed correctly 
+
+		//Update total weight so that effective number of particles are computed correctly
 		total_weight = 0;
                 for (int i = 0; i < particles_.size(); i++) {
 		    State* particle = particles_[i];
@@ -392,7 +399,7 @@ void ParticleBelief::Update(int action, OBS_TYPE obs) {
                 }
 	}
 
-	
+
 	double weight_square_sum = 0;
 	for (int i = 0; i < particles_.size(); i++) {
 		State* particle = particles_[i];
@@ -410,6 +417,7 @@ void ParticleBelief::Update(int action, OBS_TYPE obs) {
 
 		particles_ = new_belief;
 	}
+
 }
 
 Belief* ParticleBelief::MakeCopy() const {

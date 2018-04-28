@@ -7,7 +7,7 @@ namespace despot {
 
 DESPOT::DESPOT(const DSPOMDP* model, ScenarioLowerBound* lb, ScenarioUpperBound* ub, Belief* belief) :
 	Solver(model, belief),
-	root_(NULL), 
+	root_(NULL),
 	lower_bound_(lb),
 	upper_bound_(ub) {
 	assert(model != NULL);
@@ -121,6 +121,7 @@ VNode* DESPOT::ConstructTree(vector<State*>& particles, RandomStreams& streams,
 	ScenarioLowerBound* lower_bound, ScenarioUpperBound* upper_bound,
 	const DSPOMDP* model, History& history, double timeout,
 	SearchStatistics* statistics) {
+
 	if (statistics != NULL) {
 		statistics->num_particles_before_search = model->NumActiveParticles();
 	}
@@ -134,6 +135,7 @@ VNode* DESPOT::ConstructTree(vector<State*>& particles, RandomStreams& streams,
 	logd
 		<< "[DESPOT::ConstructTree] START - Initializing lower and upper bounds at the root node.";
 	InitBounds(root, lower_bound, upper_bound, streams, history);
+
 	logd
 		<< "[DESPOT::ConstructTree] END - Initializing lower and upper bounds at the root node.";
 
@@ -191,7 +193,9 @@ void DESPOT::Compare() {
 void DESPOT::InitLowerBound(VNode* vnode, ScenarioLowerBound* lower_bound,
 	RandomStreams& streams, History& history) {
 	streams.position(vnode->depth());
+
 	ValuedAction move = lower_bound->Value(vnode->particles(), streams, history);
+
 	move.value *= Globals::Discount(vnode->depth());
 	vnode->default_move(move);
 	vnode->lower_bound(move.value);
@@ -208,8 +212,11 @@ void DESPOT::InitUpperBound(VNode* vnode, ScenarioUpperBound* upper_bound,
 
 void DESPOT::InitBounds(VNode* vnode, ScenarioLowerBound* lower_bound,
 	ScenarioUpperBound* upper_bound, RandomStreams& streams, History& history) {
+
 	InitLowerBound(vnode, lower_bound, streams, history);
+
 	InitUpperBound(vnode, upper_bound, streams, history);
+
 	if (vnode->upper_bound() < vnode->lower_bound()
 		// close gap because no more search can be done on leaf node
 		|| vnode->depth() == Globals::config.search_depth - 1) {
@@ -218,16 +225,20 @@ void DESPOT::InitBounds(VNode* vnode, ScenarioLowerBound* lower_bound,
 }
 
 ValuedAction DESPOT::Search() {
+
 	if (logging::level() >= logging::DEBUG) {
-		model_->PrintBelief(*belief_);
+		model_->PrintBelief(*belief_, goal_probs);
 	}
 
 	if (Globals::config.time_per_move <= 0) // Return a random action if no time is allocated for planning
 		return ValuedAction(Random::RANDOM.NextInt(model_->NumActions()),
 			Globals::NEG_INFTY);
 
+	model_->PrintBelief(*belief_, goal_probs);
 	double start = get_time_second();
+
 	vector<State*> particles = belief_->Sample(Globals::config.num_scenarios);
+
 	logi << "[DESPOT::Search] Time for sampling " << particles.size()
 		<< " particles: " << (get_time_second() - start) << "s" << endl;
 
@@ -251,7 +262,6 @@ ValuedAction DESPOT::Search() {
 		lower_bound_->Init(streams);
 		upper_bound_->Init(streams);
 	}
-
 	root_ = ConstructTree(particles, streams, lower_bound_, upper_bound_,
 		model_, history_, Globals::config.time_per_move, &statistics_);
 	logi << "[DESPOT::Search] Time for tree construction: "
@@ -263,6 +273,10 @@ ValuedAction DESPOT::Search() {
 		<< (get_time_second() - start) << "s" << endl;
 
 	ValuedAction astar = OptimalAction(root_);
+    policyStar.clear();
+    depthOrder.clear();
+	root_->PrintPolicyTree(10, policyStar, depthOrder);
+
 	start = get_time_second();
 	delete root_;
 
@@ -273,6 +287,72 @@ ValuedAction DESPOT::Search() {
 
 	return astar;
 }
+
+//void DESPOT::Search(vector<int>& policyStar, vector<int>& depthOrder, vector<double>& goal_probs) {
+//
+//	if (logging::level() >= logging::DEBUG) {
+//		model_->PrintBelief(*belief_, goal_probs);
+//	}
+//
+////	if (Globals::config.time_per_move <= 0) // Return a random action if no time is allocated for planning
+////		return ValuedAction(Random::RANDOM.NextInt(model_->NumActions()),
+////			Globals::NEG_INFTY);
+//
+//	model_->PrintBelief(*belief_, goal_probs);
+//
+//	double start = get_time_second();
+//
+//	vector<State*> particles = belief_->Sample(Globals::config.num_scenarios);
+//
+//	logi << "[DESPOT::Search] Time for sampling " << particles.size()
+//		<< " particles: " << (get_time_second() - start) << "s" << endl;
+//
+//	statistics_ = SearchStatistics();
+//
+//	start = get_time_second();
+//	static RandomStreams streams = RandomStreams(Globals::config.num_scenarios,
+//		Globals::config.search_depth);
+//
+//	LookaheadUpperBound* ub = dynamic_cast<LookaheadUpperBound*>(upper_bound_);
+//	if (ub != NULL) { // Avoid using new streams for LookaheadUpperBound
+//		static bool initialized = false;
+//		if (!initialized ) {
+//			lower_bound_->Init(streams);
+//			upper_bound_->Init(streams);
+//			initialized = true;
+//		}
+//	} else {
+//		streams = RandomStreams(Globals::config.num_scenarios,
+//			Globals::config.search_depth);
+//		lower_bound_->Init(streams);
+//		upper_bound_->Init(streams);
+//	}
+//
+//	root_ = ConstructTree(particles, streams, lower_bound_, upper_bound_,
+//		model_, history_, Globals::config.time_per_move, &statistics_);
+//	logi << "[DESPOT::Search] Time for tree construction: "
+//		<< (get_time_second() - start) << "s" << endl;
+//
+//	start = get_time_second();
+//	root_->Free(*model_);
+//	logi << "[DESPOT::Search] Time for freeing particles in search tree: "
+//		<< (get_time_second() - start) << "s" << endl;
+//
+//	ValuedAction astar = OptimalAction(root_);
+//
+//	root_->PrintPolicyTree(10, policyStar, depthOrder);
+//	cout << policyStar[0] << " " << policyStar[1] << " " << policyStar[2] << " " << policyStar[3] << endl;
+//    cout << depthOrder[0] << " " << depthOrder[1] << " " << depthOrder[2] << " " << depthOrder[3] << endl;
+//
+//	start = get_time_second();
+//	delete root_;
+//
+//	logi << "[DESPOT::Search] Time for deleting tree: "
+//		<< (get_time_second() - start) << "s" << endl;
+//	logi << "[DESPOT::Search] Search statistics:" << endl << statistics_
+//		<< endl;
+//
+//}
 
 double DESPOT::CheckDESPOT(const VNode* vnode, double regularized_value) {
 	cout
