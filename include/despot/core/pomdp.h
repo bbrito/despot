@@ -191,8 +191,7 @@ public:
 	/**
 	 * Prints a belief.
 	 */
-	virtual void PrintBelief(const Belief& belief,
-		std::ostream& out = std::cout) const = 0;
+	virtual void PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out = std::cout)const = 0;
 
 	/* ========================================================================
 	 * Memory management.

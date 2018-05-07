@@ -349,7 +349,7 @@ void Adventurer::PrintState(const State& s, ostream& out) const {
 	out << endl;
 }
 
-void Adventurer::PrintBelief(const Belief& belief, ostream& out) const {
+void Adventurer::PrintBelief(const Belief& belief, vector<double>& goal_probs, ostream& out) const {
 }
 
 void Adventurer::PrintObs(const State& state, OBS_TYPE obs,

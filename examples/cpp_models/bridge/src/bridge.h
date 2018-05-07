@@ -58,7 +58,7 @@ public:
 		std::string particle_bound_name = "DEFAULT") const;
 
 	void PrintState(const State& state, std::ostream& out = std::cout) const;
-	void PrintBelief(const Belief& belief, std::ostream& out = std::cout) const;
+	void PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out = std::cout) const;
 	void PrintObs(const State& state, OBS_TYPE obs, std::ostream& out = std::cout) const;
 	void PrintAction(int action, std::ostream& out = std::cout) const;
 
