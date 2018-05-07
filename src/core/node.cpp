@@ -185,40 +185,8 @@ void VNode::Free(const DSPOMDP& model) {
 	}
 }
 
-void VNode::PrintPolicyTree(int depth, ostream& os) {
-	if (depth != -1 && this->depth() > depth)
-		return;
+void VNode::PrintPolicyTree(int depth, vector<int>& policyStar, vector<int>& depthOrder) {
 
-	vector<QNode*>& qnodes = children();
-	if (qnodes.size() == 0) {
-		int astar = this->default_move().action;
-		os << this << "-a=" << astar << endl;
-	} else {
-		QNode* qstar = NULL;
-		for (int a = 0; a < qnodes.size(); a++) {
-			QNode* qnode = qnodes[a];
-			if (qstar == NULL || qnode->lower_bound() > qstar->lower_bound()) {
-				qstar = qnode;
-			}
-		}
-
-		os << this << "-a=" << qstar->edge() << endl;
-
-		vector<OBS_TYPE> labels;
-		map<OBS_TYPE, VNode*>& vnodes = qstar->children();
-		for (map<OBS_TYPE, VNode*>::iterator it = vnodes.begin();
-			it != vnodes.end(); it++) {
-			labels.push_back(it->first);
-		}
-
-		for (int i = 0; i < labels.size(); i++) {
-			if (depth == -1 || this->depth() + 1 <= depth) {
-				os << repeat("|   ", this->depth()) << "| o=" << labels[i]
-					<< ": ";
-				qstar->Child(labels[i])->PrintPolicyTree(depth, os);
-			}
-		}
-	}
 }
 
 void VNode::PrintTree(int depth, ostream& os) {

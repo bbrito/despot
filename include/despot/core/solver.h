@@ -45,6 +45,8 @@ protected:
 	History history_;
 
 public:
+    	std::vector<double> goal_probs;
+    	std::vector<int> policyStar, depthOrder;
 	Solver(const DSPOMDP* model, Belief* belief);
 	virtual ~Solver();
 
