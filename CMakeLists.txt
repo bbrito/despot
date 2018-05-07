@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(despot)
 
+find_package(driving_simulator_msgs)
+
 set(BINARY_INSTALL_PATH "bin" CACHE PATH "Binary install path")
 set(LIBRARY_INSTALL_PATH "lib" CACHE PATH "Library install path")
 set(INCLUDE_INSTALL_PATH "include" CACHE PATH "Include install path")
@@ -12,7 +14,7 @@ set(DESPOT_BUILD_POMDPX ON CACHE BOOL "Build POMDPX example")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -msse2 -mfpmath=sse")
 set(CMAKE_MODULE_PATH ${CMAKE_PREFIX_PATH} "${PROJECT_SOURCE_DIR}/cmake")
 
-include_directories(include)
+include_directories(include ${driving_simulator_msgs_INCLUDE_DIRS})
 
 add_library("${PROJECT_NAME}" SHARED
   src/core/belief.cpp

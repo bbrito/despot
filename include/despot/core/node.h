@@ -81,7 +81,7 @@ public:
 	double value() const;
 
 	void PrintTree(int depth = -1, std::ostream& os = std::cout);
-	void PrintPolicyTree(int depth = -1, std::ostream& os = std::cout);
+	void PrintPolicyTree(int depth,  std::vector<int>& policyStar, std::vector<int>& depthOrder);
 
 	void Free(const DSPOMDP& model);
 };

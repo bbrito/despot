@@ -523,7 +523,8 @@ void POMDPX::PrintState(const State& s, ostream& out) const {
 	parser_->PrintState(state.vec_id, out);
 }
 
-void POMDPX::PrintBelief(const Belief& belief, ostream& out) const {
+void POMDPX::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, ostream& out) const {
+
 }
 
 void POMDPX::PrintObs(const State& state, OBS_TYPE obs, ostream& out) const {

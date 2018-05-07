@@ -11,6 +11,8 @@
 #include <despot/util/memorypool.h>
 #include <despot/util/seeds.h>
 #include <despot/util/util.h>
+#include "/home/bdebrito/catkin_ws/devel/include/driving_simulator_msgs/Waypoint.h"
+
 
 namespace despot {
 
@@ -96,6 +98,10 @@ public:
 	DSPOMDP();
 
 	virtual ~DSPOMDP();
+	
+	std::vector<driving_simulator_msgs::Waypoint> traj_R;
+	
+	std::vector<double> goal_prob_;
 
 	/* ========================================================================
 	 * Deterministic simulative model and related functions
