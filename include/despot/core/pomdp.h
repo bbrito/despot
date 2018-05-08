@@ -98,6 +98,10 @@ public:
 	DSPOMDP();
 
 	virtual ~DSPOMDP();
+	
+	std::vector<driving_simulator_msgs::Waypoint> traj_R;
+	
+	std::vector<double> goal_prob_;
 
 	/* ========================================================================
 	 * Deterministic simulative model and related functions
