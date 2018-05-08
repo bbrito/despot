@@ -541,7 +541,7 @@ void Chain::PrintState(const State& s, ostream& out) const {
 	out << state.mdp_state << endl;
 }
 
-void Chain::PrintBelief(const Belief& belief, ostream& out) const {
+void Chain::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 }
 
 void Chain::PrintObs(const State& state, OBS_TYPE obs, ostream& out) const {

@@ -824,7 +824,7 @@ void BaseRockSample::PrintState(const State& state, ostream& out) const {
 	out << endl;
 }
 
-void BaseRockSample::PrintBelief(const Belief& belief, ostream& out) const {
+void BaseRockSample::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 	const vector<State*>& particles =
 		static_cast<const ParticleBelief&>(belief).particles();
 

@@ -152,7 +152,7 @@ void Tiger::PrintState(const State& state, ostream& out) const {
 	out << tigerstate.text() << endl;
 }
 
-void Tiger::PrintBelief(const Belief& belief, ostream& out) const {
+void Tiger::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const{
 }
 
 void Tiger::PrintObs(const State& state, OBS_TYPE obs, ostream& out) const {

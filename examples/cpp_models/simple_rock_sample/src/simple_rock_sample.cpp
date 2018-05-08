@@ -273,7 +273,7 @@ void SimpleRockSample::PrintObs(const State& state, OBS_TYPE observation,
 	out << (observation ? "GOOD" : "BAD") << endl;
 }
 
-void SimpleRockSample::PrintBelief(const Belief& belief, ostream& out) const {
+void SimpleRockSample::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 	const vector<State*>& particles =
 		static_cast<const ParticleBelief&>(belief).particles();
 

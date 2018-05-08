@@ -238,7 +238,7 @@ void RegDemo::PrintState(const State& s, ostream& out) const {
 	out << endl;
 }
 
-void RegDemo::PrintBelief(const Belief& belief, ostream& out) const {
+void RegDemo::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 }
 
 void RegDemo::PrintObs(const State& state, OBS_TYPE obs, ostream& out) const {

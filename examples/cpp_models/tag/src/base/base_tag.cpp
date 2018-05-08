@@ -794,7 +794,7 @@ void BaseTag::PrintState(const State& s, ostream& out) const {
 	}
 }
 
-void BaseTag::PrintBelief(const Belief& belief, ostream& out) const {
+void BaseTag::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out ) const {
 }
 
 void BaseTag::PrintAction(int action, ostream& out) const {

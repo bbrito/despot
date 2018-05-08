@@ -834,7 +834,7 @@ void Pocman::PrintObs(const State& state, OBS_TYPE observation,
 	ostr << endl;
 }
 
-void Pocman::PrintBelief(const Belief& belief, ostream& out) const {
+void Pocman::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 	Grid<int> counts(maze_.xsize(), maze_.ysize());
 	counts.SetAllValues(0);
 	vector<State*> particles = static_cast<const ParticleBelief&>(belief).particles();

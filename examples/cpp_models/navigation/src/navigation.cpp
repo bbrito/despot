@@ -312,7 +312,7 @@ void Navigation::PrintState(const State& s, ostream& out) const {
 	}
 }
 
-void Navigation::PrintBelief(const Belief& belief, ostream& out) const {
+void Navigation::PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out) const {
 }
 
 void Navigation::PrintObs(const State& state, OBS_TYPE obs,

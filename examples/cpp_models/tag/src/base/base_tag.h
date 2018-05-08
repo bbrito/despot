@@ -131,7 +131,7 @@ public:
 	POMCPPrior* CreatePOMCPPrior(std::string name = "DEFAULT") const;
 
 	void PrintState(const State& state, std::ostream& out = std::cout) const;
-	void PrintBelief(const Belief& belief, std::ostream& out = std::cout) const;
+	void PrintBelief(const Belief& belief, std::vector<double>& goal_probs, std::ostream& out = std::cout) const;
 	virtual void PrintObs(const State& state, OBS_TYPE obs, std::ostream& out = std::cout) const = 0;
 	void PrintAction(int action, std::ostream& out = std::cout) const;
 
