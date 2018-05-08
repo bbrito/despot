@@ -3,6 +3,7 @@ project(despot)
 
 find_package(driving_simulator_msgs)
 
+set (CMAKE_CXX_STANDARD 11)
 set(BINARY_INSTALL_PATH "bin" CACHE PATH "Binary install path")
 set(LIBRARY_INSTALL_PATH "lib" CACHE PATH "Library install path")
 set(INCLUDE_INSTALL_PATH "include" CACHE PATH "Include install path")
@@ -67,6 +68,7 @@ if(DESPOT_BUILD_EXAMPLES)
   add_subdirectory(examples/cpp_models/simple_rock_sample)
   add_subdirectory(examples/cpp_models/tag)
   add_subdirectory(examples/cpp_models/tiger)
+  add_subdirectory(examples/cpp_models/POMDP)
 endif()
 
 if(DESPOT_BUILD_POMDPX)
