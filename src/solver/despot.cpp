@@ -219,13 +219,14 @@ void DESPOT::InitBounds(VNode* vnode, ScenarioLowerBound* lower_bound,
 
 ValuedAction DESPOT::Search() {
 	if (logging::level() >= logging::DEBUG) {
-		//model_->PrintBelief(*belief_);
+		model_->PrintBelief(*belief_, goal_probs);
 	}
 
 	if (Globals::config.time_per_move <= 0) // Return a random action if no time is allocated for planning
 		return ValuedAction(Random::RANDOM.NextInt(model_->NumActions()),
 			Globals::NEG_INFTY);
 
+	model_->PrintBelief(*belief_, goal_probs);
 	double start = get_time_second();
 	vector<State*> particles = belief_->Sample(Globals::config.num_scenarios);
 	logi << "[DESPOT::Search] Time for sampling " << particles.size()
@@ -263,6 +264,10 @@ ValuedAction DESPOT::Search() {
 		<< (get_time_second() - start) << "s" << endl;
 
 	ValuedAction astar = OptimalAction(root_);
+        policyStar.clear();
+        depthOrder.clear();
+	root_->PrintPolicyTree(10, policyStar, depthOrder);
+
 	start = get_time_second();
 	delete root_;
 

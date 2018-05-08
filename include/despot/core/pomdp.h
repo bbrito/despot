@@ -11,6 +11,8 @@
 #include <despot/util/memorypool.h>
 #include <despot/util/seeds.h>
 #include <despot/util/util.h>
+#include <driving_simulator_msgs/Waypoint.h>
+
 
 namespace despot {
 

@@ -10,6 +10,8 @@
 #include <despot/util/seeds.h>
 
 #include <despot/core/pomdp.h>
+#include <despot/ippc/client.h>
+
 #include <despot/evaluator.h>
 
 using namespace std;

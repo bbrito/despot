@@ -4,6 +4,7 @@
 #include <despot/core/globals.h>
 #include <despot/core/pomdp.h>
 #include <despot/pomdpx/pomdpx.h>
+#include <despot/ippc/client.h>
 #include <despot/util/util.h>
 
 namespace despot {
@@ -60,6 +61,7 @@ protected:
 	Solver* solver_;
 	clock_t start_clockt_;
 	State* state_;
+	Belief* belief_;
 	int step_;
 	double target_finish_time_;
 	std::ostream* out_;
@@ -128,6 +130,44 @@ public:
 	double StderrUndiscountedRoundReward() const;
 	double AverageDiscountedRoundReward() const;
 	double StderrDiscountedRoundReward() const;
+};
+
+/* =============================================================================
+ * IPPCEvaluator class
+ * =============================================================================*/
+
+/** Evaluation protocol used in IPPC'11 and IPPC'14. */
+class IPPCEvaluator: public Evaluator {
+private:
+	POMDPX* pomdpx_;
+	Client* client_;
+	EvalLog log_;
+	std::string instance_;
+	std::string hostname_;
+	std::string port_;
+
+public:
+	IPPCEvaluator(DSPOMDP* model, std::string belief_type, Solver* solver,
+		clock_t start_clockt, std::string hostname, std::string port, std::string log,
+		std::ostream* out);
+	~IPPCEvaluator();
+
+	void port_number(std::string port);
+	int GetNumCompletedRuns() const {
+		return log_.GetNumCompletedRuns();
+	}
+	int GetNumCompletedRuns(std::string instance) const {
+		return log_.GetNumCompletedRuns(instance);
+	}
+
+	int Handshake(std::string instance);
+	void InitRound();
+	double EndRound();
+	bool ExecuteAction(int action, double& reward, OBS_TYPE& obs);
+	// void ReportStepReward();
+	double End();
+	void UpdateTimeInfo(std::string instance);
+	void UpdateTimePerMove(double step_time);
 };
 
 /* =============================================================================
